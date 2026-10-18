@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>신원韩语词斩</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#7b8497;--line:#e8ebf2;--accent:#ff7a45;--accent2:#ffb067;--good:#20a66a;--bad:#e24a4a;--shadow:0 14px 38px rgba(36,44,70,.10)}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+.app{max-width:760px;margin:auto;min-height:100vh;padding:18px 16px 92px}.top{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 18px}.brand{font-weight:900;font-size:22px}.brand b{color:var(--accent)}.pill{font-size:12px;background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:99px;color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,#fff 0%,#fff7f1 100%)} .hero h1{font-size:28px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}.stat{background:#f8f9fc;border-radius:16px;padding:12px 8px;text-align:center}.stat b{display:block;font-size:20px}.stat span{font-size:11px;color:var(--muted)}
+.btn{border:0;border-radius:16px;padding:14px 16px;font-weight:800;font-size:15px;cursor:pointer}.primary{background:var(--accent);color:white}.ghost{background:#f3f5f9;color:var(--ink)}.good{background:#eaf8f1;color:var(--good)}.mid{background:#fff4e8;color:#c86c14}.bad{background:#fff0f0;color:var(--bad)}
+.actions{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;margin-top:14px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:20}.tabs>div{max-width:760px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 10px calc(7px + env(safe-area-inset-bottom))}
+.tab{border:0;background:none;padding:8px 4px;color:#8a92a4;font-size:12px}.tab.active{color:var(--accent);font-weight:800}.tab i{display:block;font-style:normal;font-size:20px;margin-bottom:2px}
+.view{display:none}.view.active{display:block}
+.flash{min-height:430px;display:flex;flex-direction:column;justify-content:space-between;text-align:center}.meta{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.chip{font-size:11px;padding:5px 8px;border-radius:99px;background:#f1f3f7;color:#697184}
+.icon{font-size:70px;margin:20px 0 6px}.word{font-size:42px;font-weight:900;letter-spacing:-1px}.meaning{font-size:22px;font-weight:800;margin-top:8px}.hiddenMeaning{filter:blur(9px);user-select:none}.sub{color:var(--muted);font-size:14px;margin-top:10px}.example{background:#f8f9fc;border-radius:16px;padding:14px;margin-top:14px;text-align:left;line-height:1.65}.example small{color:var(--muted)}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.speak{width:46px;height:46px;border-radius:50%;border:0;background:#fff3ea;font-size:21px;cursor:pointer;margin:10px auto}
+.progress{height:8px;background:#eceff5;border-radius:99px;overflow:hidden;margin:8px 0 14px}.progress span{display:block;height:100%;background:var(--accent);width:0}
+.listhead{display:flex;gap:8px;margin-bottom:12px}.search{flex:1;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;background:white}
+select{border:1px solid var(--line);border-radius:14px;padding:10px;background:white}.wordrow{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--line)}.wordrow .wi{font-size:28px;width:42px;text-align:center}.wordrow .grow{flex:1}.wordrow b{font-size:18px}.wordrow small{display:block;color:var(--muted);margin-top:3px}.master{font-size:12px;color:var(--good)}
+.quizq{text-align:center;padding:24px 4px}.quizq .big{font-size:38px;font-weight:900}.options{display:grid;gap:9px}.option{border:1px solid var(--line);background:white;border-radius:16px;padding:15px;text-align:left;font-size:15px}.option.correct{border-color:var(--good);background:#eaf8f1}.option.wrong{border-color:var(--bad);background:#fff0f0}
+.formgrid{display:grid;gap:10px}.formgrid input,.formgrid textarea,.formgrid select{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;font:inherit;background:white}.formgrid textarea{min-height:74px}
+.sectionTitle{font-size:18px;font-weight:900;margin:6px 0 12px}.tiny{font-size:12px;color:var(--muted);line-height:1.5}.danger{color:var(--bad)}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.word{font-size:36px}.flash{min-height:410px}}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="top"><div class="brand"><b>신원</b>韩语词斩</div><div class="pill" id="today"></div></div>
+
+ <section id="home" class="view active">
+  <div class="panel hero">
+   <h1>오늘도 화이팅!</h1>
+   <p>你的首尔大韩语私人词库。教材词、老师扩展词、易错变形放在一起循环复习。</p>
+   <div class="stats">
+    <div class="stat"><b id="sTotal">0</b><span>总词汇</span></div>
+    <div class="stat"><b id="sMaster">0</b><span>已掌握</span></div>
+    <div class="stat"><b id="sReview">0</b><span>待复习</span></div>
+    <div class="stat"><b id="sStreak">1</b><span>连续天数</span></div>
+   </div>
+   <div class="actions"><button class="btn primary" onclick="startStudy()">开始今日背词</button><button class="btn ghost" onclick="go('quiz')">四选一测试</button></div>
+  </div>
+  <div class="panel">
+   <div class="sectionTitle">词库</div>
+   <div id="deckSummary"></div>
+  </div>
+  <div class="panel">
+   <div class="sectionTitle">学习规则</div>
+   <div class="tiny">不认识：1分钟后优先再现　·　模糊：提高复习频率　·　认识：逐步拉长间隔。数据保存在当前浏览器；可在“管理”里导出 JSON 备份。</div>
+  </div>
+ </section>
+
+ <section id="study" class="view">
+  <div class="progress"><span id="prog"></span></div>
+  <div class="panel flash">
+   <div>
+    <div class="meta" id="meta"></div>
+    <div class="icon" id="fIcon">📚</div>
+    <div class="word" id="fWord"></div>
+    <button class="speak" onclick="speakCurrent()">🔊</button>
+    <div id="answerArea">
+      <div class="meaning hiddenMeaning" id="fMeaning"></div>
+      <div class="sub">先回忆意思，再点击显示答案</div>
+      <button class="btn primary" style="margin-top:18px" onclick="reveal()">显示答案</button>
+    </div>
+    <div id="detailArea" style="display:none">
+      <div class="meaning" id="fMeaning2"></div>
+      <div class="sub" id="fForm"></div>
+      <div class="example"><b id="fEx"></b><br><small id="fExZh"></small></div>
+    </div>
+   </div>
+   <div class="rate" id="rate" style="display:none">
+    <button class="btn bad" onclick="rate(0)">不认识</button>
+    <button class="btn mid" onclick="rate(1)">模糊</button>
+    <button class="btn good" onclick="rate(2)">认识</button>
+   </div>
+  </div>
+ </section>
+
+ <section id="quiz" class="view">
+  <div class="panel">
+   <div class="sectionTitle">四选一 · 中韩识别</div>
+   <div class="quizq"><div class="big" id="qWord"></div><div class="sub">选择正确的中文意思</div></div>
+   <div class="options" id="options"></div>
+   <button id="nextQ" class="btn primary" style="width:100%;margin-top:14px;display:none" onclick="newQuiz()">下一题</button>
+  </div>
+ </section>
+
+ <section id="words" class="view">
+  <div class="panel">
+   <div class="sectionTitle">全部词汇</div>
+   <div class="listhead"><input id="search" class="search" placeholder="搜索韩语 / 中文…" oninput="renderWords()"><select id="deckFilter" onchange="renderWords()"></select></div>
+   <div id="wordList"></div>
+  </div>
+ </section>
+
+ <section id="manage" class="view">
+  <div class="panel">
+   <div class="sectionTitle">添加新词</div>
+   <div class="formgrid">
+    <input id="aKo" placeholder="韩语，例如：기다리다">
+    <input id="aZh" placeholder="中文，例如：等待">
+    <select id="aPos"><option>名词</option><option>动词</option><option>形容词</option><option>副词</option><option>表达</option><option>连接副词</option><option>量词</option></select>
+    <input id="aBook" placeholder="词库，例如：首尔大2A / 老师扩展">
+    <input id="aForm" placeholder="变形，例如：기다리다 → 기다려요 → 기다렸어요">
+    <input id="aEx" placeholder="韩语例句">
+    <input id="aExZh" placeholder="中文例句">
+    <button class="btn primary" onclick="addWord()">加入词库</button>
+   </div>
+  </div>
+  <div class="panel">
+   <div class="sectionTitle">词库备份</div>
+   <div class="actions"><button class="btn ghost" onclick="exportData()">导出 JSON</button><label class="btn ghost" style="text-align:center">导入 JSON<input type="file" accept=".json" onchange="importData(event)" hidden></label></div>
+   <p class="tiny">以后继续学 1B、2A、2B 时，可以持续往这个数据库追加，不需要重做网站。</p>
+   <button class="btn ghost danger" style="width:100%;margin-top:8px" onclick="resetProgress()">只重置学习进度</button>
+  </div>
+ </section>
+</div>
+
+<div class="tabs"><div>
+<button class="tab active" data-v="home" onclick="go('home')"><i>⌂</i>首页</button>
+<button class="tab" data-v="study" onclick="startStudy()"><i>▣</i>背词</button>
+<button class="tab" data-v="words" onclick="go('words')"><i>☷</i>词库</button>
+<button class="tab" data-v="manage" onclick="go('manage')"><i>＋</i>管理</button>
+</div></div>
+
+<script>
+const seed = [{"ko": "안녕하세요", "zh": "你好", "pos": "表达", "book": "首尔大1A", "unit": "基础", "ex": "안녕하세요? 저는 신원이에요.", "exzh": "你好，我是信元。", "form": "", "tag": "问候", "icon": "👋"}, {"ko": "학생", "zh": "学生", "pos": "名词", "book": "首尔大1A", "unit": "1", "ex": "저는 학생이에요.", "exzh": "我是学生。", "form": "", "tag": "身份", "icon": "🎓"}, {"ko": "선생님", "zh": "老师", "pos": "名词", "book": "首尔大1A", "unit": "1", "ex": "선생님은 한국 사람이에요.", "exzh": "老师是韩国人。", "form": "", "tag": "身份", "icon": "🧑‍🏫"}, {"ko": "친구", "zh": "朋友", "pos": "名词", "book": "首尔大1A", "unit": "1", "ex": "친구를 만나요.", "exzh": "见朋友。", "form": "", "tag": "人物", "icon": "👭"}, {"ko": "여기", "zh": "这里", "pos": "代词", "book": "首尔大1A", "unit": "2", "ex": "여기는 학교예요.", "exzh": "这里是学校。", "form": "", "tag": "地点", "icon": "📍"}, {"ko": "거기", "zh": "那里", "pos": "代词", "book": "首尔大1A", "unit": "2", "ex": "거기는 어디예요?", "exzh": "那里是哪里？", "form": "", "tag": "地点", "icon": "📌"}, {"ko": "저기", "zh": "那边", "pos": "代词", "book": "首尔大1A", "unit": "2", "ex": "저기에 은행이 있어요.", "exzh": "那边有银行。", "form": "", "tag": "地点", "icon": "🗺️"}, {"ko": "위", "zh": "上面", "pos": "名词", "book": "首尔大1A", "unit": "3", "ex": "책상 위에 책이 있어요.", "exzh": "桌子上有书。", "form": "", "tag": "方位", "icon": "⬆️"}, {"ko": "아래", "zh": "下面", "pos": "名词", "book": "首尔大1A", "unit": "3", "ex": "책상 아래에 강아지가 있어요.", "exzh": "桌子下面有小狗。", "form": "", "tag": "方位", "icon": "⬇️"}, {"ko": "옆", "zh": "旁边", "pos": "名词", "book": "首尔大1A", "unit": "3", "ex": "집 옆에 가게가 있어요.", "exzh": "家旁边有商店。", "form": "", "tag": "方位", "icon": "↔️"}, {"ko": "안", "zh": "里面", "pos": "名词", "book": "首尔大1A", "unit": "3", "ex": "가방 안에 책이 있어요.", "exzh": "包里有书。", "form": "", "tag": "方位", "icon": "👜"}, {"ko": "멀다", "zh": "远", "pos": "形容词", "book": "首尔大1A", "unit": "3", "ex": "학교가 멀어요.", "exzh": "学校很远。", "form": "멀다 → 멀어요", "tag": "方位", "icon": "🛣️"}, {"ko": "가깝다", "zh": "近", "pos": "形容词", "book": "首尔大1A", "unit": "3", "ex": "집에서 학교가 가까워요.", "exzh": "学校离家很近。", "form": "가깝다 → 가까워요", "tag": "方位", "icon": "🏠"}, {"ko": "많다", "zh": "多", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "사람이 많아요.", "exzh": "人很多。", "form": "많다 → 많아요", "tag": "描述", "icon": "👥"}, {"ko": "싸다", "zh": "便宜", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "이 가방은 싸요.", "exzh": "这个包很便宜。", "form": "싸다 → 싸요", "tag": "购物", "icon": "🏷️"}, {"ko": "비싸다", "zh": "贵", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "이 옷은 비싸요.", "exzh": "这件衣服很贵。", "form": "비싸다 → 비싸요", "tag": "购物", "icon": "💳"}, {"ko": "맛있다", "zh": "好吃", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "김밥이 맛있어요.", "exzh": "紫菜包饭很好吃。", "form": "맛있다 → 맛있어요", "tag": "饮食", "icon": "🍙"}, {"ko": "맛없다", "zh": "不好吃", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "이 음식은 맛없어요.", "exzh": "这个食物不好吃。", "form": "맛없다 → 맛없어요", "tag": "饮食", "icon": "🥣"}, {"ko": "깨끗하다", "zh": "干净", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "방이 깨끗해요.", "exzh": "房间很干净。", "form": "깨끗하다 → 깨끗해요", "tag": "描述", "icon": "✨"}, {"ko": "친절하다", "zh": "亲切", "pos": "形容词", "book": "首尔大1A", "unit": "5", "ex": "선생님이 친절해요.", "exzh": "老师很亲切。", "form": "친절하다 → 친절해요", "tag": "描述", "icon": "🙂"}, {"ko": "사진을 찍다", "zh": "拍照", "pos": "动词", "book": "首尔大1A", "unit": "6", "ex": "친구랑 사진을 찍어요.", "exzh": "和朋友拍照。", "form": "찍다 → 찍어요 → 찍었어요", "tag": "日常", "icon": "📷"}, {"ko": "구경하다", "zh": "参观；逛", "pos": "动词", "book": "首尔大1A", "unit": "7", "ex": "백화점을 구경해요.", "exzh": "逛百货商店。", "form": "구경하다 → 구경해요", "tag": "日常", "icon": "🏬"}, {"ko": "화장을 하다", "zh": "化妆", "pos": "动词", "book": "首尔大1A", "unit": "7", "ex": "지금 화장을 하고 있어요.", "exzh": "现在正在化妆。", "form": "하다 → 해요 → 했어요", "tag": "日常", "icon": "💄"}, {"ko": "길다", "zh": "长", "pos": "形容词", "book": "首尔大1A", "unit": "8", "ex": "머리가 길어요.", "exzh": "头发很长。", "form": "길다 → 길어요", "tag": "外貌", "icon": "📏"}, {"ko": "짧다", "zh": "短", "pos": "形容词", "book": "首尔大1A", "unit": "8", "ex": "머리가 짧아요.", "exzh": "头发很短。", "form": "짧다 → 짧아요", "tag": "外貌", "icon": "✂️"}, {"ko": "따뜻하다", "zh": "温暖", "pos": "形容词", "book": "首尔大1A", "unit": "8", "ex": "오늘은 따뜻해요.", "exzh": "今天很暖和。", "form": "따뜻하다 → 따뜻해요", "tag": "天气", "icon": "🌤️"}, {"ko": "바람이 불다", "zh": "刮风", "pos": "动词", "book": "首尔大1A", "unit": "8", "ex": "오늘 바람이 불어요.", "exzh": "今天刮风。", "form": "불다 → 불어요 → 불었어요", "tag": "天气", "icon": "🌬️"}, {"ko": "혼밥", "zh": "独自吃饭；一人食", "pos": "名词", "book": "老师扩展", "unit": "1A后期", "ex": "오늘 혼밥을 해요.", "exzh": "今天一个人吃饭。", "form": "혼자 밥을 먹다 = 혼밥을 하다", "tag": "口语", "icon": "🍚"}, {"ko": "중요하다", "zh": "重要", "pos": "形容词", "book": "老师扩展", "unit": "1A后期", "ex": "한국어 공부가 중요해요.", "exzh": "学习韩语很重要。", "form": "중요하다 → 중요해요", "tag": "描述", "icon": "❗"}, {"ko": "저번주", "zh": "上周", "pos": "名词", "book": "老师扩展", "unit": "1A后期", "ex": "저번주에 친구를 만났어요.", "exzh": "上周见了朋友。", "form": "저번주 = 지난주", "tag": "时间", "icon": "◀️"}, {"ko": "이번주", "zh": "这周", "pos": "名词", "book": "老师扩展", "unit": "1A后期", "ex": "이번주에 수업이 있어요.", "exzh": "这周有课。", "form": "", "tag": "时间", "icon": "📅"}, {"ko": "다음주", "zh": "下周", "pos": "名词", "book": "老师扩展", "unit": "1A后期", "ex": "다음주에 만나요.", "exzh": "下周见。", "form": "", "tag": "时间", "icon": "▶️"}, {"ko": "결혼하다", "zh": "结婚", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "친구가 이미 결혼했어요.", "exzh": "朋友已经结婚了。", "form": "결혼하다 → 결혼해요 → 결혼했어요", "tag": "生活", "icon": "💍"}, {"ko": "약혼하다", "zh": "订婚", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "제 친구는 이미 약혼했어요.", "exzh": "我的朋友已经订婚了。", "form": "약혼하다 → 약혼해요", "tag": "生活", "icon": "💎"}, {"ko": "약속하다", "zh": "约定", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "친구랑 약속했어요.", "exzh": "和朋友约好了。", "form": "약속하다 → 약속해요 → 약속했어요", "tag": "生活", "icon": "🤝"}, {"ko": "아마도", "zh": "也许；大概", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "아마도 저녁에 만날 거예요.", "exzh": "大概晚上会见面。", "form": "", "tag": "副词", "icon": "🤔"}, {"ko": "이따가", "zh": "一会儿；待会儿", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "이따가 샤워할 거예요.", "exzh": "待会儿要洗澡。", "form": "", "tag": "时间", "icon": "⏳"}, {"ko": "먼저", "zh": "先；首先", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "먼저 세수하고 양치해요.", "exzh": "先洗脸再刷牙。", "form": "", "tag": "副词", "icon": "1️⃣"}, {"ko": "이미", "zh": "已经", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "이미 밥을 먹었어요.", "exzh": "已经吃饭了。", "form": "", "tag": "副词", "icon": "✅"}, {"ko": "아직", "zh": "还；尚未", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "아직 숙제를 안 했어요.", "exzh": "还没做作业。", "form": "아직 + 안/못", "tag": "副词", "icon": "⌛"}, {"ko": "하루종일", "zh": "一整天", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "하루종일 공부했어요.", "exzh": "学了一整天。", "form": "아침부터 밤까지", "tag": "时间", "icon": "🌞"}, {"ko": "놀다", "zh": "玩", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "친구랑 놀아요.", "exzh": "和朋友玩。", "form": "놀다 → 놀아요 → 놀았어요", "tag": "日常", "icon": "🎮"}, {"ko": "게으르다", "zh": "懒惰", "pos": "形容词", "book": "老师扩展", "unit": "1A后期", "ex": "오늘 너무 게을러요.", "exzh": "今天太懒了。", "form": "게으르다 → 게을러요", "tag": "르不规则", "icon": "🛋️"}, {"ko": "세수하다", "zh": "洗脸", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "아침에 세수해요.", "exzh": "早上洗脸。", "form": "세수하다 → 세수해요", "tag": "日常", "icon": "🧼"}, {"ko": "양치하다", "zh": "刷牙", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "매일 이를 닦아요.", "exzh": "每天刷牙。", "form": "양치하다 = 이를 닦다", "tag": "日常", "icon": "🪥"}, {"ko": "샤워하다", "zh": "洗澡；淋浴", "pos": "动词", "book": "老师扩展", "unit": "1A后期", "ex": "이따가 샤워할 거예요.", "exzh": "待会儿要洗澡。", "form": "샤워하다 → 샤워해요", "tag": "日常", "icon": "🚿"}, {"ko": "귀찮다", "zh": "麻烦；嫌麻烦", "pos": "形容词", "book": "老师扩展", "unit": "1A后期", "ex": "오늘은 좀 귀찮아요.", "exzh": "今天觉得有点麻烦。", "form": "귀찮다 → 귀찮아요", "tag": "感受", "icon": "😩"}, {"ko": "일찍", "zh": "早地；早点", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "오늘 일찍 일어났어요.", "exzh": "今天起得很早。", "form": "일찍 ↔ 늦게", "tag": "时间", "icon": "🌅"}, {"ko": "늦게", "zh": "晚地；迟地", "pos": "副词", "book": "老师扩展", "unit": "1A后期", "ex": "어제 늦게 잤어요.", "exzh": "昨天睡得很晚。", "form": "일찍 ↔ 늦게", "tag": "时间", "icon": "🌙"}, {"ko": "생얼", "zh": "素颜", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "지금 저는 생얼이에요.", "exzh": "我现在是素颜。", "form": "발음 [쌩얼]", "tag": "口语", "icon": "🪞"}, {"ko": "마리", "zh": "只（动物量词）", "pos": "量词", "book": "老师扩展", "unit": "1B", "ex": "강아지 한 마리 있어요.", "exzh": "有一只狗。", "form": "한 마리, 두 마리, 세 마리…", "tag": "数量", "icon": "🐶"}, {"ko": "무겁다", "zh": "重", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "이 가방은 너무 무거워요.", "exzh": "这个包太重了。", "form": "무겁다 → 무거워요", "tag": "ㅂ不规则", "icon": "🏋️"}, {"ko": "가볍다", "zh": "轻", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "이 책은 가벼워요.", "exzh": "这本书很轻。", "form": "가볍다 → 가벼워요", "tag": "ㅂ不规则", "icon": "🪶"}, {"ko": "쉬다", "zh": "休息", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "오늘 집에서 쉬어요.", "exzh": "今天在家休息。", "form": "쉬다 → 쉬어요", "tag": "日常", "icon": "🛌"}, {"ko": "쉽다", "zh": "容易", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "이 문제는 쉬워요.", "exzh": "这道题很容易。", "form": "쉽다 → 쉬워요", "tag": "ㅂ不规则", "icon": "👌"}, {"ko": "어렵다", "zh": "难", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "한국어가 어려워요.", "exzh": "韩语很难。", "form": "어렵다 → 어려워요", "tag": "ㅂ不规则", "icon": "🧩"}, {"ko": "배고프다", "zh": "饿", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "지금 배고파요.", "exzh": "现在饿了。", "form": "배고프다 → 배고파요", "tag": "感受", "icon": "🍽️"}, {"ko": "배부르다", "zh": "饱", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "김밥을 먹어서 배불러요.", "exzh": "吃了紫菜包饭，所以很饱。", "form": "배부르다 → 배불러요", "tag": "르不规则", "icon": "😋"}, {"ko": "왜냐하면", "zh": "因为", "pos": "连接副词", "book": "老师扩展", "unit": "1B", "ex": "일찍 일어났어요. 왜냐하면 수업이 있어요.", "exzh": "起得很早，因为有课。", "form": "", "tag": "连接词", "icon": "💡"}, {"ko": "그래서", "zh": "所以", "pos": "连接副词", "book": "老师扩展", "unit": "1B", "ex": "한국어가 어려워요. 그래서 공부해요.", "exzh": "韩语很难，所以学习。", "form": "", "tag": "连接词", "icon": "➡️"}, {"ko": "사료", "zh": "宠物饲料；狗粮", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "강아지 사료를 사요.", "exzh": "买狗粮。", "form": "강아지 음식 = 사료", "tag": "宠物", "icon": "🦴"}, {"ko": "시간이 걸리다", "zh": "花费时间", "pos": "表达", "book": "首尔大1B", "unit": "交通", "ex": "집에서 학교까지 10분 걸려요.", "exzh": "从家到学校要10分钟。", "form": "걸리다 → 걸려요 → 걸렸어요", "tag": "交通", "icon": "⏱️"}, {"ko": "기다리다", "zh": "等待", "pos": "动词", "book": "首尔大1B", "unit": "交通", "ex": "동물병원에서 계속 기다렸어요.", "exzh": "一直在动物医院等。", "form": "기다리다 → 기다려요 → 기다렸어요", "tag": "日常", "icon": "🚏"}, {"ko": "가끔", "zh": "偶尔", "pos": "副词", "book": "老师扩展", "unit": "1B", "ex": "저는 가끔 운동해요.", "exzh": "我偶尔运动。", "form": "", "tag": "频率", "icon": "🔁"}, {"ko": "계속", "zh": "一直；继续", "pos": "副词", "book": "老师扩展", "unit": "1B", "ex": "저는 계속 공부하고 있어요.", "exzh": "我一直在学习。", "form": "", "tag": "频率", "icon": "♾️"}, {"ko": "힘들다", "zh": "累；辛苦；困难", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "오늘 한국어 공부가 힘들어요.", "exzh": "今天学韩语很辛苦。", "form": "힘들다 → 힘들어요", "tag": "感受", "icon": "😮‍💨"}, {"ko": "후회하다", "zh": "后悔", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "진짜 후회했어요.", "exzh": "真的后悔了。", "form": "후회하다 → 후회해요 → 후회했어요", "tag": "感受", "icon": "😔"}, {"ko": "긴장하다", "zh": "紧张", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "병원에서 긴장했어요.", "exzh": "在医院很紧张。", "form": "긴장하다 → 긴장해요 → 긴장했어요", "tag": "感受", "icon": "😰"}, {"ko": "울다", "zh": "哭", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "어제 많이 울었어요.", "exzh": "昨天哭了很多。", "form": "울다 → 울어요 → 울었어요", "tag": "感受", "icon": "😢"}, {"ko": "새벽", "zh": "凌晨", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "새벽 3시에 잤어요.", "exzh": "凌晨3点睡的。", "form": "", "tag": "时间", "icon": "🌌"}, {"ko": "비행기를 타다", "zh": "坐飞机", "pos": "动词", "book": "首尔大1B", "unit": "交通", "ex": "한국에 비행기를 타고 왔어요.", "exzh": "坐飞机来了韩国。", "form": "타다 → 타요 → 탔어요", "tag": "交通", "icon": "✈️"}, {"ko": "지하철을 타다", "zh": "坐地铁", "pos": "动词", "book": "首尔大1B", "unit": "交通", "ex": "지하철을 타고 가요.", "exzh": "坐地铁去。", "form": "타다 → 타요", "tag": "交通", "icon": "🚇"}, {"ko": "버스를 타다", "zh": "坐公交车", "pos": "动词", "book": "首尔大1B", "unit": "交通", "ex": "버스를 타고 학교에 가요.", "exzh": "坐公交车去学校。", "form": "타다 → 타요", "tag": "交通", "icon": "🚌"}, {"ko": "자전거를 타다", "zh": "骑自行车", "pos": "动词", "book": "首尔大1B", "unit": "交通", "ex": "중국에서 자전거를 많이 탔어요.", "exzh": "在中国经常骑自行车。", "form": "타다 → 타요 → 탔어요", "tag": "交通", "icon": "🚲"}, {"ko": "감기에 걸리다", "zh": "感冒", "pos": "表达", "book": "首尔大1B", "unit": "医院", "ex": "어제 감기에 걸렸어요.", "exzh": "昨天感冒了。", "form": "걸리다 → 걸려요 → 걸렸어요", "tag": "医院", "icon": "🤧"}, {"ko": "기침을 하다", "zh": "咳嗽", "pos": "表达", "book": "首尔大1B", "unit": "医院", "ex": "기침을 해요.", "exzh": "咳嗽。", "form": "하다 → 해요", "tag": "医院", "icon": "😷"}, {"ko": "콧물이 나다", "zh": "流鼻涕", "pos": "表达", "book": "首尔大1B", "unit": "医院", "ex": "콧물이 나고 기침을 해요.", "exzh": "流鼻涕而且咳嗽。", "form": "나다 → 나요", "tag": "医院", "icon": "🤧"}, {"ko": "열이 나다", "zh": "发烧", "pos": "表达", "book": "首尔大1B", "unit": "医院", "ex": "어제부터 열이 나요.", "exzh": "从昨天开始发烧。", "form": "나다 → 나요 → 났어요", "tag": "医院", "icon": "🌡️"}, {"ko": "피곤하다", "zh": "疲惫", "pos": "形容词", "book": "老师扩展", "unit": "1B", "ex": "어제 늦게까지 공부해서 피곤해요.", "exzh": "昨天学到很晚，所以很累。", "form": "피곤하다 → 피곤해요", "tag": "感受", "icon": "🥱"}, {"ko": "푹 쉬다", "zh": "好好休息", "pos": "表达", "book": "老师扩展", "unit": "1B", "ex": "오늘 푹 쉬세요.", "exzh": "今天好好休息。", "form": "푹 + 쉬다", "tag": "医院", "icon": "🛏️"}, {"ko": "금식", "zh": "禁食", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "수술 전에 금식해요.", "exzh": "手术前禁食。", "form": "금식하다", "tag": "医院", "icon": "🚫"}, {"ko": "금주", "zh": "戒酒；禁酒", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "요즘 금주해요.", "exzh": "最近在戒酒。", "form": "금주하다", "tag": "健康", "icon": "🥤"}, {"ko": "금연", "zh": "戒烟；禁烟", "pos": "名词", "book": "老师扩展", "unit": "1B", "ex": "여기는 금연이에요.", "exzh": "这里禁烟。", "form": "금연하다", "tag": "健康", "icon": "🚭"}, {"ko": "담배를 피우다", "zh": "抽烟", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "담배를 피우지 마세요.", "exzh": "请不要抽烟。", "form": "피우다 → 피워요", "tag": "健康", "icon": "🚭"}, {"ko": "술을 마시다", "zh": "喝酒", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "술을 마시지 않아요.", "exzh": "不喝酒。", "form": "마시다 → 마셔요 → 마셨어요", "tag": "饮食", "icon": "🥂"}, {"ko": "참석하다", "zh": "参加；出席", "pos": "动词", "book": "老师扩展", "unit": "1B", "ex": "친구 결혼식에 참석했어요.", "exzh": "参加了朋友的婚礼。", "form": "참석하다 → 참석해요 → 참석했어요", "tag": "生活", "icon": "🎉"}];
+let words = JSON.parse(localStorage.getItem('sw_words')||'null') || seed;
+let progress = JSON.parse(localStorage.getItem('sw_progress')||'{}');
+let queue=[], qi=0, current=null, quizCurrent=null;
+
+function save(){localStorage.setItem('sw_words',JSON.stringify(words));localStorage.setItem('sw_progress',JSON.stringify(progress))}
+function key(w){return w.ko+'|'+w.book}
+function go(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.v===v));if(v==='home')renderHome();if(v==='words')renderWords();if(v==='quiz')newQuiz();window.scrollTo(0,0)}
+function renderHome(){
+ document.getElementById('sTotal').textContent=words.length;
+ let mastered=words.filter(w=>(progress[key(w)]?.level||0)>=4).length;
+ let review=words.filter(w=>(progress[key(w)]?.seen||0)>0 && (progress[key(w)]?.level||0)<4).length;
+ document.getElementById('sMaster').textContent=mastered; document.getElementById('sReview').textContent=review;
+ const decks={}; words.forEach(w=>decks[w.book]=(decks[w.book]||0)+1);
+ document.getElementById('deckSummary').innerHTML=Object.entries(decks).map(([d,n])=>`<div class="wordrow"><div class="wi">📚</div><div class="grow"><b>${d}</b><small>${n} 个词</small></div><span class="master">${words.filter(w=>w.book===d&&(progress[key(w)]?.level||0)>=4).length} 已掌握</span></div>`).join('');
+}
+function startStudy(){
+ queue=[...words].sort((a,b)=>((progress[key(a)]?.level||0)-(progress[key(b)]?.level||0)) || Math.random()-.5).slice(0,30);
+ qi=0; go('study'); showCard();
+}
+function showCard(){
+ if(!queue.length){return}
+ current=queue[qi%queue.length]; const p=progress[key(current)]||{};
+ document.getElementById('meta').innerHTML=[current.book,current.pos,current.tag].filter(Boolean).map(x=>`<span class="chip">${x}</span>`).join('');
+ fIcon.textContent=current.icon||'📘'; fWord.textContent=current.ko; fMeaning.textContent=current.zh; fMeaning2.textContent=current.zh; fForm.textContent=current.form||'';
+ fEx.textContent=current.ex||''; fExZh.textContent=current.exzh||'';
+ answerArea.style.display='block';detailArea.style.display='none';rate.style.display='none';fMeaning.classList.add('hiddenMeaning');
+ prog.style.width=((qi%queue.length)/queue.length*100)+'%';
+}
+function reveal(){answerArea.style.display='none';detailArea.style.display='block';rate.style.display='grid'}
+function rate(r){
+ const k=key(current), p=progress[k]||{seen:0,level:0,wrong:0}; p.seen++;
+ if(r===0){p.level=Math.max(0,p.level-1);p.wrong++;queue.splice(Math.min(qi+3,queue.length),0,current)}
+ if(r===1)p.level=Math.max(1,p.level);
+ if(r===2)p.level=Math.min(5,p.level+1);
+ p.last=Date.now();progress[k]=p;save();qi++; if(qi>=queue.length){go('home');alert('今日这一轮完成了。');return} showCard();
+}
+function speakCurrent(){ if(!current)return; const u=new SpeechSynthesisUtterance(current.ko);u.lang='ko-KR';u.rate=.82;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function newQuiz(){
+ if(words.length<4)return; quizCurrent=words[Math.floor(Math.random()*words.length)]; qWord.textContent=quizCurrent.ko; nextQ.style.display='none';
+ let opts=[quizCurrent,...words.filter(w=>w.zh!==quizCurrent.zh).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);
+ options.innerHTML=opts.map(w=>`<button class="option" onclick="answerQuiz(this,${JSON.stringify(w.zh)},${JSON.stringify(quizCurrent.zh)})">${w.zh}</button>`).join('');
+}
+function answerQuiz(btn,ans,correct){
+ document.querySelectorAll('.option').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct')});
+ if(ans!==correct)btn.classList.add('wrong'); nextQ.style.display='block';
+}
+function renderWords(){
+ const decks=['全部',...new Set(words.map(w=>w.book))]; if(deckFilter.options.length!==decks.length)deckFilter.innerHTML=decks.map(d=>`<option>${d}</option>`).join('');
+ const q=search.value.trim().toLowerCase(), d=deckFilter.value;
+ const arr=words.filter(w=>(d==='全部'||w.book===d)&&(!q||w.ko.toLowerCase().includes(q)||w.zh.toLowerCase().includes(q)));
+ wordList.innerHTML=arr.map(w=>`<div class="wordrow"><div class="wi">${w.icon||'📘'}</div><div class="grow"><b>${w.ko}</b><small>${w.zh} · ${w.pos} · ${w.book}</small>${w.form?`<small>${w.form}</small>`:''}</div><span class="master">${'●'.repeat(Math.min(5,progress[key(w)]?.level||0))}</span></div>`).join('') || '<p class="tiny">没有匹配的词。</p>';
+}
+function addWord(){
+ const ko=aKo.value.trim(),zh=aZh.value.trim();if(!ko||!zh){alert('至少填写韩语和中文。');return}
+ words.push({ko,zh,pos:aPos.value,book:aBook.value.trim()||'我的单词',unit:'',form:aForm.value.trim(),ex:aEx.value.trim(),exzh:aExZh.value.trim(),tag:'自定义',icon:'📝'});save();
+ [aKo,aZh,aBook,aForm,aEx,aExZh].forEach(x=>x.value='');alert('已加入词库。');renderHome();
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify({words,progress,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shinwon-korean-vocab-backup.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importData(e){
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);words=d.words||words;progress=d.progress||progress;save();renderHome();alert('导入完成。')}catch{alert('JSON 文件格式不正确。')}};r.readAsText(f);
+}
+function resetProgress(){if(confirm('确定只清空学习进度吗？词库不会删除。')){progress={};save();renderHome()}}
+document.getElementById('today').textContent=new Date().toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});
+renderHome();renderWords();
+</script>
+</body></html>
